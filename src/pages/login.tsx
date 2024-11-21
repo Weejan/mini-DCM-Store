@@ -7,7 +7,7 @@ import { TUserType } from "../state/authSlice";
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
 
-  const { login, permission, userType } = store();
+  const { login, permission } = store();
 
   const navigate = useNavigate();
 
@@ -21,9 +21,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const response = await login(form);
-
     permission(response!.role as TUserType);
     navigate("/");
   };

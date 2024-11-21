@@ -9,10 +9,6 @@ export type TEntityType = "workspace" | "patient" | "study" | "report";
 export type TPermissionType = "create" | "view" | "update" | "delete";
 export type TUserType = "superadmin" | "admin" | "annotator";
 
-export interface IGetWorkspaceRequestBody {
-  id: number;
-}
-
 export interface IAuthState {
   authLoading: boolean;
   authError: string | null;
@@ -41,7 +37,11 @@ const createAuthSlice: StateCreator<IAuthState> = (set) => ({
     set({ authLoading: true, authError: null });
 
     const response = await loginResponsePromise(data);
+
     try {
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("userType", response.role);
+
       set({
         token: response.token,
         userType: response.role as TUserType,

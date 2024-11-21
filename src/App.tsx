@@ -1,6 +1,5 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
-import store from "./store";
 import useRoutes from "./Routes/useRoutes";
 import AppLayout from "./AppLayout";
 
@@ -14,7 +13,7 @@ const ProtectedRoutes = ({ token }: IProtectedRoutesProps) => {
 };
 
 function App() {
-  const { token } = store();
+  const token = localStorage.getItem("token");
   const routes = useRoutes();
   return (
     <>
