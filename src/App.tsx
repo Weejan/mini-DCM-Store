@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
 import useRoutes from "./Routes/useRoutes";
 import AppLayout from "./AppLayout";
+import useStore from "./store";
 
 interface IProtectedRoutesProps {
   token: string | null;
@@ -13,7 +14,7 @@ const ProtectedRoutes = ({ token }: IProtectedRoutesProps) => {
 };
 
 function App() {
-  const token = localStorage.getItem("token");
+  const { token } = useStore();
   const routes = useRoutes();
   return (
     <>
