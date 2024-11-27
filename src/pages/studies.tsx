@@ -1,82 +1,63 @@
-import { useLocation, useParams } from "react-router-dom";
-import useStore from "../store";
 import { useEffect } from "react";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import useStore from "../store";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { AccessControl } from "../AccessControl";
-import { EditNotifications } from "@mui/icons-material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
-function Workspace() {
-  const { workspaceId } = useParams();
-  const {
-    getAllStudy,
-    allPatient,
-    getAllPatients,
-    patientError,
-    patientLoading,
-    getSingleWorkspace,
-  } = useStore();
+function Studies() {
+  const { getAllStudy, studys, studyLoading, studyError } = useStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getAllStudy();
-      await getAllPatients();
-      await getSingleWorkspace({ id: parseInt(workspaceId!) });
+    const fetchStudies = async () => {
+      await getAllStudy(); // This updates the store state
     };
-    fetchData();
-  }, [getAllPatients, getSingleWorkspace]);
+    fetchStudies();
+  }, [getAllStudy]);
 
   return (
     <div className="shadow-lg rounded-2xl flex flex-col justify-center items-center px-6 py-7 bg-white mt-6 gap-5">
       <section className="flex justify-between w-full">
-        <h1 className="text-2xl font-light">Recent Patients</h1>
+        <h1 className="text-2xl font-light">Recent Studies</h1>
       </section>
-      {patientLoading && <p>Loading...</p>}
-      {patientError && <p>Error: {patientError}</p>}
+      {studyLoading && <p>Loading...</p>}
+      {studyError && <p>Error: {studyError}</p>}
       <TableContainer component={Paper} className="">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Patient ID</TableCell>
+              <TableCell>Study ID</TableCell>
+              <TableCell align="left">Study&nbsp;Name</TableCell>
               <TableCell align="left">Patient&nbsp;Name</TableCell>
-              <TableCell align="left">Age</TableCell>
-              <TableCell align="left">Gender</TableCell>
-              <TableCell align="left">Address</TableCell>
-              <TableCell align="left">Contact</TableCell>
+              <TableCell align="left">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allPatient ? (
-              allPatient.map((patient) => (
+            {studys ? (
+              studys.map((row) => (
                 <TableRow
-                  key={patient.id} // Ensure this key is unique
+                  key={row.id} // Ensure this key is unique
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {patient.id}
+                    {row.id}
                   </TableCell>
-                  <TableCell align="left">{patient.name}</TableCell>
-                  <TableCell align="left">{patient.age}</TableCell>
-                  <TableCell align="left">{patient.gender}</TableCell>
-
-                  <TableCell align="left">{patient.address}</TableCell>
-                  <TableCell align="left">{patient.contact}</TableCell>
+                  <TableCell align="left">{row.name}</TableCell>
+                  <TableCell align="left">{row.patientName}</TableCell>
 
                   <TableCell align="left">
                     {
                       <>
                         <AccessControl
                           entity="study"
-                          jsx={<EditNotifications />}
+                          jsx={<EditIcon />}
                           permissions={["update"]}
                         />
                         <AccessControl
@@ -107,4 +88,5 @@ function Workspace() {
     </div>
   );
 }
-export default Workspace;
+
+export default Studies;

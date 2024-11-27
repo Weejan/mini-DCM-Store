@@ -44,6 +44,7 @@ function permissionsPromise(userType: TUserType): Promise<IPermissionResponse> {
       resolve({ permission: response });
     } else {
       reject("login error");
+      console.log("permission error");
     }
   });
 }

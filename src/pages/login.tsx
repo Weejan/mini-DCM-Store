@@ -1,13 +1,13 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
-import store from "../store";
+import useStore from "../store";
 import { useNavigate } from "react-router-dom";
 import { TUserType } from "../state/authSlice";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
 
-  const { login, permission } = store();
+  const { doLogin, getPermission } = useStore();
 
   const navigate = useNavigate();
 
@@ -21,9 +21,15 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await login(form);
-    permission(response!.role as TUserType);
-    navigate("/");
+    const response = await doLogin(form);
+    if (response) {
+      const permissionResponse = await getPermission(
+        response.role as TUserType
+      );
+      if (permissionResponse) {
+        navigate("/"); // Navigate only after both `login` and `permission` succeed
+      }
+    }
   };
 
   return (

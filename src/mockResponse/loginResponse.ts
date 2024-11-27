@@ -14,9 +14,10 @@ function loginResponsePromise(
     if (loginReqData.email === "wee" && loginReqData.password === "123") {
       resolve({
         token: "auth_token",
-        role: "super_admin",
+        role: "annotator",
       });
     } else {
+      console.log("permission error");
       reject("login error");
     }
   });

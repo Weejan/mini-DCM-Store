@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
 import { ILoginReqBody, ILoginResBody } from "../mockResponse/loginResponse";
 import loginResponsePromise from "../mockResponse/loginResponse";
+import useStore, { ICombinedState } from "../store";
 import permissionsPromise, {
   IPermissionResponse,
 } from "../mockResponse/mockPermissions";
@@ -15,13 +16,16 @@ export interface IAuthState {
   token: string | null;
   userType: TUserType | null;
   wsPermissions: Record<TEntityType, TPermissionType[]> | null;
-  login: (data: ILoginReqBody) => Promise<ILoginResBody | undefined>;
+  doLogin: (data: ILoginReqBody) => Promise<ILoginResBody | undefined>;
   setAuthLoading: (loading: boolean) => void;
   setAuthError: (error: string | null) => void;
-  permission: (userTyper: TUserType) => Promise<IPermissionResponse>;
+  getPermission: (userTyper: TUserType) => Promise<IPermissionResponse>;
+  doLogout: () => void;
 }
 
-const createAuthSlice: StateCreator<IAuthState> = (set) => ({
+const createAuthSlice: StateCreator<ICombinedState, [], [], IAuthState> = (
+  set
+) => ({
   // Initial state
   authLoading: false,
   authError: null,
@@ -33,7 +37,7 @@ const createAuthSlice: StateCreator<IAuthState> = (set) => ({
   setAuthLoading: (authLoading) => set({ authLoading }),
   setAuthError: (authError) => set({ authError }),
 
-  login: async (data: ILoginReqBody) => {
+  doLogin: async (data: ILoginReqBody) => {
     set({ authLoading: true, authError: null });
 
     const response = await loginResponsePromise(data);
@@ -41,7 +45,6 @@ const createAuthSlice: StateCreator<IAuthState> = (set) => ({
     try {
       localStorage.setItem("token", response.token);
       localStorage.setItem("userType", response.role);
-
       set({
         token: response.token,
         userType: response.role as TUserType,
@@ -55,7 +58,7 @@ const createAuthSlice: StateCreator<IAuthState> = (set) => ({
       console.log("errorrr");
     }
   },
-  permission: async (userType: TUserType) => {
+  getPermission: async (userType: TUserType) => {
     set({ authLoading: true, authError: null });
 
     const response = await permissionsPromise(userType);
@@ -65,22 +68,29 @@ const createAuthSlice: StateCreator<IAuthState> = (set) => ({
       authLoading: false,
       authError: null,
     });
-    console.log(response, userType);
     return response;
+  },
+  doLogout: () => {
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userType");
+      console.log("Before clearing storage:", localStorage.getItem("store"));
+      useStore.persist.clearStorage();
+      console.log("After clearing storage:", localStorage.getItem("store"));
 
-    // return permissionsPromise(userType)
-    //   .then((response) => {
-    //     set({
-    //       wsPermissions: response.permission,
-    //       authLoading: false,
-    //       authError: null,
-    //     });
-    //     console.log("permission aayo");
-    //   })
-    //   .catch((error) => {
-    //     set({ authError: error, authLoading: false });
-    //     console.log("no permission");
-    //   });
+      set({
+        token: null,
+        userType: null,
+        authLoading: false,
+        authError: null,
+        currentWorkspace: null,
+        wsPermissions: null,
+        studys: null,
+      });
+    } catch (error) {
+      set({ authError: JSON.stringify(error), authLoading: false });
+      console.log("errorrr");
+    }
   },
 });
 

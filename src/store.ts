@@ -1,15 +1,29 @@
 import { create } from "zustand";
 import createLoginSlice, { IAuthState } from "./state/authSlice";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import createWorkshopSlice, { IWorkspaceState } from "./state/workspaceSlice";
+import createStudySlice, { IStudyState } from "./state/studySlice";
+import createPatientSlice, { IPatientState } from "./state/patientSlice";
 
-export interface ICombinedState extends IAuthState, IWorkspaceState {}
+export interface ICombinedState
+  extends IAuthState,
+    IWorkspaceState,
+    IStudyState,
+    IPatientState {}
 
-const store = create<ICombinedState>()(
-  devtools((...a) => ({
-    ...createLoginSlice(...a),
-    ...createWorkshopSlice(...a),
-  }))
+// Create the Zustand store instance
+const useStore = create<ICombinedState>()(
+  devtools(
+    persist(
+      (...a) => ({
+        ...createLoginSlice(...a),
+        ...createWorkshopSlice(...a),
+        ...createStudySlice(...a),
+        ...createPatientSlice(...a),
+      }),
+      { name: "store" }
+    )
+  )
 );
 
-export default store;
+export default useStore;
