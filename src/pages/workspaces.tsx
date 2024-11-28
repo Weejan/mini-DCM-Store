@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 function Workspaces() {
   const navigate = useNavigate();
   const [workspaces, setWorkspaces] = useState<IWorkspace[] | null>(null);
-  const { getWorkspaces } = useStore();
+  const { getWorkspaces, getSingleWorkspace } = useStore();
 
   useEffect(() => {
     const fetchWorkspaces = async () => {
@@ -24,15 +24,21 @@ function Workspaces() {
         <h1 className="text-2xl font-light">Recent Workspaces</h1>
         <Button variant="contained">View All</Button>
       </section>
-      <section id="recent-workshops" className="flex gap-6  w-full">
+      <section
+        id="recent-workshops"
+        className="flex w-full gap-6 justify-between  overflow-x-auto "
+      >
         {workspaces ? (
           workspaces.map((workspace) => (
             <div
-              className="w-[225px] border   h-[107px] flex flex-col justify-center rounded-md bg-blue-700 shadow-md"
-              onClick={() => navigate(`/workspace/${workspace.id}`)}
+              className="min-w-[250px] border   h-[107px] flex flex-col justify-center rounded-md bg-blue-700 shadow-md"
+              onClick={async () => {
+                await getSingleWorkspace({ id: workspace.id });
+                navigate(`/workspace/${workspace.id}`);
+              }}
             >
               <div
-                className="w-[224px] border h-[100px] rounded-md bg-white flex flex-col justify-center p-4 gap-2"
+                className="min-w-[249px] border h-[100px] rounded-md bg-white flex flex-col justify-center p-4 gap-2"
                 key={workspace.id}
               >
                 <div>
