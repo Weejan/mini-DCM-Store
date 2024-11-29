@@ -1,56 +1,64 @@
-import * as React from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link as RouterLink } from "react-router-dom";
 
-function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-  event.preventDefault();
-  console.info("You clicked a breadcrumb.");
-}
-
-export default function CustomSeparator() {
+export default function BreadCrumbs() {
   const { pathname } = useLocation();
 
-  const breadcrumbs = [
-    <Link
-      underline="hover"
-      key="1"
-      color="inherit"
-      href="/"
-      onClick={handleClick}
-    >
-      MUI
-    </Link>,
-    <Link
-      underline="hover"
-      key="2"
-      color="inherit"
-      href="/material-ui/getting-started/installation/"
-      onClick={handleClick}
-    >
-      Core
-    </Link>,
-    <Typography key="3" sx={{ color: "text.primary" }}>
-      Breadcrumb
-    </Typography>,
-  ];
+  // Helper function to map paths to breadcrumb labels
+  const pathNamesToLabels: Record<string, string> = {
+    "": "Home",
+    workspace: "Workspace",
+    patient: "Patient",
+  };
+
+  // Split pathname into segments
+  const pathSegments = pathname.split("/").filter((segment) => segment);
+
+  // Generate breadcrumb links
+  const breadcrumbs = pathSegments.map((segment, index) => {
+    // Create a URL for each breadcrumb
+    const to = `/${pathSegments.slice(0, index + 1).join("/")}`;
+
+    // Render a Link for intermediate breadcrumbs, Typography for the last one
+    return index < pathSegments.length - 1 ? (
+      <Link
+        underline="hover"
+        key={to}
+        color="inherit"
+        component={RouterLink}
+        to={to}
+      >
+        {pathNamesToLabels[segment] || segment}
+      </Link>
+    ) : (
+      <Typography key={to} sx={{ color: "text.primary" }}>
+        {pathNamesToLabels[segment] || segment}
+      </Typography>
+    );
+  });
 
   return (
     <Stack spacing={2}>
-      <Breadcrumbs separator="›" aria-label="breadcrumb">
-        {breadcrumbs}
-      </Breadcrumbs>
-      <Breadcrumbs separator="-" aria-label="breadcrumb">
-        {breadcrumbs}
-      </Breadcrumbs>
       <Breadcrumbs
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
       >
-        {breadcrumbs}
+        {[
+          <Link
+            underline="hover"
+            key="/"
+            color="inherit"
+            component={RouterLink}
+            to="/"
+          >
+            {pathNamesToLabels[""] || "Home"}
+          </Link>,
+          ...breadcrumbs,
+        ]}
       </Breadcrumbs>
     </Stack>
   );

@@ -19,7 +19,7 @@ function Workspaces() {
   }, [getWorkspaces]);
 
   return (
-    <div className=" shadow-lg    rounded-2xl  flex flex-col justify-center items-center px-6 py-7 bg-white mt-6 gap-5">
+    <div className=" shadow-lg    rounded-2xl  flex flex-col justify-center items-center px-6 py-7 bg-white gap-5">
       <section className="flex justify-between w-full">
         <h1 className="text-2xl font-light">Recent Workspaces</h1>
         <Button variant="contained">View All</Button>
