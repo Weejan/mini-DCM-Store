@@ -132,7 +132,7 @@ export default function BreadCrumbs() {
     };
 
     fetchLabels(); // Trigger label fetching
-  }, [pathSegments, dynamicLabels]);
+  }, [pathSegments]);
 
   // Generate breadcrumbs
   const breadcrumbs = pathSegments.map((segment, index) => {

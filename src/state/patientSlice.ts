@@ -46,6 +46,7 @@ const createPatientSlice: StateCreator<
     const { patientId } = data;
 
     const patient = response.find((patient) => patient.id === patientId)!;
+    set({ currentPatient: patient });
 
     return patient;
   },

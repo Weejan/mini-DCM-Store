@@ -12,9 +12,15 @@ import { AccessControl } from "../AccessControl";
 import { EditNotifications } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Patients() {
-  const { allPatient, patientError, patientLoading } = useStore();
+  const { allPatient, patientError, patientLoading, getSinglePatient } =
+    useStore();
+
+  const navigate = useNavigate();
+
+  const { workspaceId } = useParams();
   return (
     <div className="shadow-lg rounded-2xl flex flex-col justify-center items-center px-6 py-7 bg-white  gap-8 w-full  overflow-y-auto">
       <section className="flex justify-between w-full">
@@ -38,9 +44,13 @@ function Patients() {
             {allPatient ? (
               allPatient.map((patient) => (
                 <TableRow
-                  key={patient.id} // Ensure this key is unique
+                  key={patient.id}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
+                  }}
+                  onClick={async () => {
+                    await getSinglePatient({ patientId: patient.id });
+                    navigate(`/workspace/${workspaceId}/patient/${patient.id}`);
                   }}
                 >
                   <TableCell component="th" scope="row">
