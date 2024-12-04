@@ -62,9 +62,11 @@ function InfoCard({ currentElement }: InfoCardProps) {
                     {key}
                   </span>
                   <span>
-                    {typeof data[propertyKey] === "object"
-                      ? JSON.stringify(data[propertyKey])
-                      : data[propertyKey]}
+                    {data[propertyKey] !== null
+                      ? typeof data[propertyKey] === "object"
+                        ? Object.keys(data[propertyKey]).length
+                        : data[propertyKey]
+                      : "no data found"}
                   </span>
                 </li>
               </ul>
