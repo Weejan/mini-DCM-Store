@@ -15,7 +15,6 @@ function InfoCard({ currentElement }: InfoCardProps) {
   useEffect(() => {
     setData(currentElement);
   }, [currentElement]);
-  console.log(data);
 
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>();
   const menuVisible = Boolean(anchorElement);

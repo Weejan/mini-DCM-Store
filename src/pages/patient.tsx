@@ -7,7 +7,6 @@ import Patients from "./patients";
 function Patient() {
   const { patientId } = useParams();
   const { getSinglePatient, currentPatient } = useStore();
-  console.log(currentPatient);
 
   useEffect(() => {
     const fetchData = async () => {
