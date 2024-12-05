@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import useStore from "../store";
 import { AccessControl } from "../AccessControl";
-import { EditNotifications } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,9 +33,15 @@ function Patients() {
     <div className="shadow-lg rounded-2xl flex flex-col justify-center items-center px-6 py-7 bg-white  gap-8 w-full  overflow-y-auto">
       <section className="flex justify-between w-full">
         <h1 className="text-2xl font-light">Patients</h1>
-        <Button variant="contained" onClick={togglePop}>
-          Add
-        </Button>
+        <AccessControl
+          entity="patient"
+          permissions={["create"]}
+          jsx={
+            <Button variant="contained" onClick={togglePop}>
+              Add
+            </Button>
+          }
+        />
       </section>
       {patientLoading && <p>Loading...</p>}
       {patientError && <p>Error: {patientError}</p>}
@@ -78,11 +83,6 @@ function Patients() {
                   <TableCell align="left">
                     {
                       <>
-                        <AccessControl
-                          entity="study"
-                          jsx={<EditNotifications />}
-                          permissions={["update"]}
-                        />
                         <AccessControl
                           entity="study"
                           jsx={<VisibilityIcon />}

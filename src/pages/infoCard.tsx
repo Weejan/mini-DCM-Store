@@ -1,23 +1,31 @@
 import { useEffect, useState } from "react";
-import ContextMenu from "./contextMenu";
-import { HomeRepairServiceOutlined } from "@mui/icons-material";
+import ContextMenu, { IMenuItem } from "./contextMenu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IWorkspace } from "../mockResponse/workspaceResponse";
 import { IPatient } from "../mockResponse/patientResponse";
+import { AccessControl } from "../AccessControl";
+import { TEntityType, TPermissionType } from "../state/authSlice";
 
 interface InfoCardProps {
-  currentElement: IWorkspace | IPatient | null; // Pass the workspace data as a prop
+  currentElement: IWorkspace | IPatient | null;
+  contextMenuItems: IMenuItem[];
+  entity: TEntityType;
+  permissions: TPermissionType[];
 }
 
-function InfoCard({ currentElement }: InfoCardProps) {
+function InfoCard({
+  currentElement,
+  contextMenuItems,
+  entity,
+  permissions,
+}: InfoCardProps) {
   const [data, setData] = useState<IWorkspace | IPatient | null>(null);
+  const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
+  const menuVisible = Boolean(anchorElement);
 
   useEffect(() => {
     setData(currentElement);
   }, [currentElement]);
-
-  const [anchorElement, setAnchorElement] = useState<null | HTMLElement>();
-  const menuVisible = Boolean(anchorElement);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorElement(event.currentTarget);
@@ -27,29 +35,29 @@ function InfoCard({ currentElement }: InfoCardProps) {
   return (
     <>
       <ContextMenu
-        anchorElement={anchorElement ?? null}
+        anchorElement={anchorElement}
         open={menuVisible}
         onClose={handleMenuClose}
-        items={[
-          {
-            icon: <HomeRepairServiceOutlined />,
-            label: "repair",
-            onClick: () => console.log("chalyo"),
-          },
-          {
-            icon: <HomeRepairServiceOutlined />,
-            label: "repair",
-            onClick: () => console.log("chalyo"),
-            color: "error",
-          },
-        ]}
+        items={contextMenuItems}
       />
+
       <div className=" flex flex-col min-h-[150px] rounded-2xl shadow-lg w-full bg-white py-6 px-7 gap-5">
         <div className="flex justify-between">
           <div className="font-medium text-2xl">{data?.name}</div>
-          <div onClick={handleMenuClick}>
-            <MoreVertIcon></MoreVertIcon>
-          </div>
+          <AccessControl
+            entity={entity}
+            jsx={
+              <div onClick={handleMenuClick}>
+                <MoreVertIcon></MoreVertIcon>
+              </div>
+            }
+            permissions={permissions}
+          />
+          {/* {data && (
+            <div onClick={handleMenuClick}>
+              <MoreVertIcon></MoreVertIcon>
+            </div>
+          )} */}
         </div>
         <div className="flex">
           {Object.keys(data).map((key) => {

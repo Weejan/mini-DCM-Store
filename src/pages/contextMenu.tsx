@@ -1,7 +1,7 @@
 import { Box, Menu, MenuItem, MenuProps, Typography } from "@mui/material";
 import React from "react";
 
-interface IMenuItem {
+export interface IMenuItem {
   label: string;
   icon: React.ReactElement;
   onClick: () => void;

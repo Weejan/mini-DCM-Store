@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useStore from "../store";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,12 +8,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { AccessControl } from "../AccessControl";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Button } from "@mui/material";
 
 function Studies() {
   const { getAllStudy, studys, studyLoading, studyError } = useStore();
+  const [seen, setSeen] = useState(false);
 
   useEffect(() => {
     const fetchStudies = async () => {
@@ -22,10 +23,23 @@ function Studies() {
     fetchStudies();
   }, [getAllStudy]);
 
+  function togglePop() {
+    setSeen(!seen);
+  }
+
   return (
     <div className="shadow-lg rounded-2xl flex flex-col justify-center items-center px-6 py-7 bg-white  gap-5">
       <section className="flex justify-between w-full">
-        <h1 className="text-2xl font-light">Recent Studies</h1>
+        <h1 className="text-2xl font-light">Studies</h1>
+        <AccessControl
+          entity="study"
+          permissions={["update"]}
+          jsx={
+            <Button variant="contained" onClick={togglePop}>
+              Add
+            </Button>
+          }
+        />
       </section>
       {studyLoading && <p>Loading...</p>}
       {studyError && <p>Error: {studyError}</p>}
@@ -55,11 +69,6 @@ function Studies() {
                   <TableCell align="left">
                     {
                       <>
-                        <AccessControl
-                          entity="study"
-                          jsx={<EditIcon />}
-                          permissions={["update"]}
-                        />
                         <AccessControl
                           entity="study"
                           jsx={<VisibilityIcon />}
