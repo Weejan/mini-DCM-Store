@@ -40,11 +40,11 @@ export const mockPatient: IPatient[] = [
   {
     id: 1,
     name: "Wizzy",
-    study: [mockStudies[0], mockStudies[1]],
+    study: [mockStudies[0]],
     report: [{ id: 1, data: "report" }],
     age: 45,
     gender: "Male",
-    address: "123 Main St, Springfield",
+    address: "123 Main St, Springfieldd fsadfsfsfs",
     contact: "123-456-7890",
   },
   {
@@ -60,7 +60,7 @@ export const mockPatient: IPatient[] = [
   {
     id: 3,
     name: "Tev",
-    study: [mockStudies[2], mockStudies[3], mockStudies[4]],
+    study: [mockStudies[1]],
     report: [
       { id: 1, data: "report" },
       { id: 2, data: "yui" },
@@ -73,7 +73,7 @@ export const mockPatient: IPatient[] = [
   {
     id: 4,
     name: "Axel",
-    study: [mockStudies[4]],
+    study: [mockStudies[2]],
     report: [{ id: 3, data: "analysis pending" }],
     age: 52,
     gender: "Male",
@@ -83,7 +83,7 @@ export const mockPatient: IPatient[] = [
   {
     id: 5,
     name: "Blaze",
-    study: [mockStudies[2], mockStudies[1]],
+    study: [mockStudies[3]],
     report: [{ id: 4, data: "finalized" }],
     age: 40,
     gender: "Male",
@@ -93,7 +93,7 @@ export const mockPatient: IPatient[] = [
   {
     id: 6,
     name: "Nova",
-    study: null,
+    study: [mockStudies[4]],
     report: [
       { id: 5, data: "initial draft" },
       { id: 6, data: "revised report" },

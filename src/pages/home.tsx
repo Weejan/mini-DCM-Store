@@ -8,7 +8,7 @@ function Home() {
         <Workspaces />
       </div>
 
-      {/* Recent Studies Section */}
+      {/* Recent Studies  Section */}
       <div className="w-[97%] mx-auto  mt-6">
         <Studies />
       </div>

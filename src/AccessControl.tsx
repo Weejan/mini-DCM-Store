@@ -24,7 +24,7 @@ type AccessControlProps = {
 //       wsPermissions?.[entityType]?.includes(perm)
 //     );
 
-//     if (!hasPermission) return null; // If permissions are missing, render nothing
+//     if (!hasPermission) return null;
 //     return <WrappedComponent {...props} />;
 //   };
 // };
@@ -53,12 +53,11 @@ export const AccessControl = ({
 }: AccessControlProps) => {
   const { wsPermissions } = useStore();
 
-  // Check if the entity has all required permissions
   const hasPermission = permissions.every((perm) =>
     wsPermissions?.[entity]?.includes(perm)
   );
 
-  if (!hasPermission) return null; // If permissions are missing, render nothing
+  if (!hasPermission) return null;
 
   return jsx;
 };

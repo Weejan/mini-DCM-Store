@@ -5,6 +5,7 @@ import { IWorkspace } from "../mockResponse/workspaceResponse";
 import { IPatient } from "../mockResponse/patientResponse";
 import { AccessControl } from "../AccessControl";
 import { TEntityType, TPermissionType } from "../state/authSlice";
+import { Tooltip, Typography } from "@mui/material";
 
 interface InfoCardProps {
   currentElement: IWorkspace | IPatient | null;
@@ -60,25 +61,32 @@ function InfoCard({
           )} */}
         </div>
         <div className="flex">
-          {Object.keys(data).map((key) => {
-            const propertyKey = key as keyof typeof data;
-            return (
-              <ul className="w-full flex justify-between">
+          <ul className="w-full flex justify-between">
+            {Object.keys(data).map((key) => {
+              const propertyKey = key as keyof typeof data;
+              return (
                 <li key={key} className="flex flex-col justify-between">
-                  <span className="font-meduium text-gray-400 capitalize">
+                  <Typography
+                    noWrap
+                    className="font-meduium text-gray-400 capitalize"
+                  >
                     {key}
-                  </span>
-                  <span>
-                    {data[propertyKey] !== null
-                      ? typeof data[propertyKey] === "object"
-                        ? Object.keys(data[propertyKey]).length
-                        : data[propertyKey]
-                      : "no data found"}
-                  </span>
+                  </Typography>
+                  <Tooltip title={JSON.stringify(data[propertyKey])} placement="bottom-start">
+
+                    <Typography noWrap className="w-[10vw]">
+                      {data[propertyKey] !== null
+                        ? typeof data[propertyKey] === "object"
+                          ? Object.keys(data[propertyKey]).length
+                          : data[propertyKey]
+                        : "no data found"}
+                    </Typography>
+                  </Tooltip>
+
                 </li>
-              </ul>
-            );
-          })}
+              );
+            })}
+          </ul>
         </div>
       </div>
     </>

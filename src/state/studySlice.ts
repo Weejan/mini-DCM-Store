@@ -19,12 +19,10 @@ const createStudySlice: StateCreator<IStudyState> = (set) => ({
 
   getAllStudy: async () => {
     const response = await patientPromise();
-    console.log(response);
     const studyList = response
       .map((patient) => patient.study)
       .flat()
       .filter((study) => study !== null) as IStudyBody[];
-    console.log(studyList);
     set({ studys: studyList.length > 0 ? studyList : null });
     return studyList;
   },
