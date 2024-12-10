@@ -11,12 +11,10 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 function DrawerButton() {
   const [open, setOpen] = useState(false);
   const { doLogout, currentWorkspace } = useStore();
-  const navigate = useNavigate();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);

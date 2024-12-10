@@ -27,7 +27,7 @@ function Login() {
         response.role as TUserType
       );
       if (permissionResponse) {
-        navigate("/"); // Navigate only after both `login` and `permission` succeed
+        navigate("/");
       }
     }
   };

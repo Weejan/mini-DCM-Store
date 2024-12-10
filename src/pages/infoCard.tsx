@@ -24,6 +24,7 @@ function InfoCard({
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
   const menuVisible = Boolean(anchorElement);
 
+
   useEffect(() => {
     setData(currentElement);
   }, [currentElement]);
@@ -42,7 +43,7 @@ function InfoCard({
         items={contextMenuItems}
       />
 
-      <div className=" flex flex-col min-h-[150px] rounded-2xl shadow-lg w-full bg-white py-6 px-7 gap-5">
+      <div className=" flex flex-col min-h-[150px] rounded-2xl shadow-lg w-full bg-white py-6 px-7 gap-5 transition-all">
         <div className="flex justify-between">
           <div className="font-medium text-2xl">{data?.name}</div>
           <AccessControl
@@ -54,11 +55,6 @@ function InfoCard({
             }
             permissions={permissions}
           />
-          {/* {data && (
-            <div onClick={handleMenuClick}>
-              <MoreVertIcon></MoreVertIcon>
-            </div>
-          )} */}
         </div>
         <div className="flex">
           <ul className="w-full flex justify-between">

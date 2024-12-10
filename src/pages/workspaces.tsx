@@ -31,6 +31,7 @@ function Workspaces() {
         {workspaces ? (
           workspaces.map((workspace) => (
             <div
+              key={workspace.id}
               className="min-w-[250px] border   h-[107px] flex flex-col justify-center rounded-md bg-blue-700 shadow-md"
               onClick={async () => {
                 await getSingleWorkspace({ id: workspace.id });
@@ -39,7 +40,7 @@ function Workspaces() {
             >
               <div
                 className="min-w-[249px] border h-[100px] rounded-md bg-white flex flex-col justify-center p-4 gap-2"
-                key={workspace.id}
+
               >
                 <div>
                   {workspace.name} ({workspace.code})
